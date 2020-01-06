@@ -47,6 +47,20 @@ services:
       financier:
         ipv4_address: 172.30.0.103
 
+  frontend:
+    build: ./dockerization/frontend
+    container_name: financier_frontend
+    user: 1000:1000
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: npm run dev-server
+    links:
+      - php
+    networks:
+      financier:
+        ipv4_address: 172.30.0.104
+
 networks:
   financier:
     driver: bridge
