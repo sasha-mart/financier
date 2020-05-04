@@ -1,11 +1,11 @@
 import Vue from "vue";
 import App from "./App";
-
-import VueRouter from 'vue-router'
-
-Vue.use(VueRouter);
+import router from "./router";
+import store from "./store";
 
 new Vue({
   components: { App },
-  template: "<App/>"
+  template: "<App/>",
+  router,
+  store
 }).$mount("#app");
