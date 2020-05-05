@@ -4,29 +4,88 @@
       <h1>Transactions</h1>
     </div>
 
-    <div class="row col">
-      <form>
-        <div class="form-row">
-          <div class="col-8">
-            <input
-              v-model="amount"
-              type="text"
-              class="form-control"
-            >
-          </div>
-          <div class="col-4">
-            <button
-              :disabled="amount.length === 0 || isLoading"
-              type="button"
-              class="btn btn-primary"
-              @click="createTransaction()"
-            >
-              Create
-            </button>
-          </div>
+    <form>
+      <div class="form-row">
+        <div class="form-group col-4">
+          <label
+            for="transaction-amount"
+          >Amount</label>
+          <input
+            id="transaction-amount"
+            v-model.number="amount"
+            placeholder="Amount"
+            type="number"
+            class="form-control"
+          >
         </div>
-      </form>
-    </div>
+        <div class="form-group col-4">
+          <label for="transaction-category">Category</label>
+          <select
+            id="transaction-category"
+            v-model="category"
+            class="form-control"
+          >
+            <option
+              v-for="categoryItem in categories"
+              :key="categoryItem.id"
+              :value="categoryItem['@id']"
+            >
+              {{ categoryItem.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-4">
+          <label
+            for="transaction-datetime"
+          >Date</label>
+          <input
+            id="transaction-datetime"
+            v-model="datetime"
+            type="date"
+            class="col-4 form-control"
+          >
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-4">
+          <label for="transaction-initiator">Initiator</label>
+          <input
+            id="transaction-initiator"
+            v-model.trim="initiator"
+            type="text"
+            class="form-control"
+          >
+        </div>
+        <div class="form-group col-4">
+          <label for="transaction-description">Description</label>
+          <input
+            id="transaction-description"
+            v-model.trim="description"
+            type="text"
+            class="form-control"
+          >
+        </div>
+        <div class="form-group col-4">
+          <label for="transaction-additionalInfo">Additional info</label>
+          <input
+            id="transaction-additionalInfo"
+            v-model.trim="additionalInfo"
+            type="text"
+            class="form-control"
+          >
+        </div>
+      </div>
+      <div class="form-row">
+        <button
+          :disabled="amount.length === 0 || datetime === null || category.length === null || isLoading"
+          type="button"
+          class="btn btn-primary"
+          @click="createTransaction()"
+        >
+          Create
+        </button>
+      </div>
+    </form>
 
     <div
       v-if="isLoading"
@@ -60,7 +119,9 @@
       :key="transaction.id"
       class="row col"
     >
-      <transaction :amount="transaction.amount" />
+      <transaction
+        :transaction="transaction"
+      />
     </div>
   </div>
 </template>
@@ -75,7 +136,12 @@ export default {
   },
   data() {
     return {
-      amount: ""
+      amount: "",
+      datetime: null,
+      category: "",
+      initiator: "",
+      description: "",
+      additionalInfo: ""
     };
   },
   computed: {
@@ -93,10 +159,14 @@ export default {
     },
     transactions() {
       return this.$store.getters["transactions/transactions"];
+    },
+    categories() {
+      return this.$store.getters["categories/categories"];
     }
   },
   created() {
     this.$store.dispatch("transactions/findAll");
+    this.$store.dispatch("categories/findAll");
   },
   methods: {
     async createTransaction() {

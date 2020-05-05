@@ -25,10 +25,10 @@ export default {
       return state.error;
     },
     hasTransactions(state) {
-      return state.transactions['hydra:totalItems'] > 0;
+      return state.transactions.length > 0;
     },
     transactions(state) {
-      return state.transactions['hydra:member'];
+      return state.transactions;
     }
   },
   mutations: {
@@ -54,7 +54,7 @@ export default {
     [FETCHING_TRANSACTIONS_SUCCESS](state, transactions) {
       state.isLoading = false;
       state.error = null;
-      state.transactions = transactions;
+      state.transactions = transactions['hydra:member'];
     },
     [FETCHING_TRANSACTIONS_ERROR](state, error) {
       state.isLoading = false;

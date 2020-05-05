@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Enum\TransactionType;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,11 +22,13 @@ class Category
     private $id;
 
     /**
+     * @Groups({"transaction:read"})
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @Groups({"transaction:read"})
      * @ORM\Column(type="string", length=255)
      * @Assert\Choice(choices=TransactionType::AVAILABLE_TYPES)
      */

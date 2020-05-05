@@ -3,12 +3,13 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use Symfony\Component\Validator\Constraints as Assert;
-use App\Enum\TransactionType;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"transaction:read"}, "swagger_definition_name"="Read"}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\TransactionRepository")
  */
 class Transaction
@@ -16,41 +17,47 @@ class Transaction
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
+     * @Groups({"transaction:read"})
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
+     * @Groups({"transaction:read"})
      * @ORM\Column(type="datetime")
      */
     private $datetime;
 
     /**
+     * @Groups({"transaction:read"})
      * @ORM\ManyToOne(targetEntity="App\Entity\Category")
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Choice(choices=TransactionType::AVAILABLE_TYPES)
-     */
-    private $type;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @Groups({"transaction:read"})
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $initiator;
 
     /**
+     * @Groups({"transaction:read"})
      * @ORM\Column(type="float")
      */
     private $amount;
 
     /**
+     * @Groups({"transaction:read"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $notice;
+    private $description;
+
+    /**
+     * @Groups({"transaction:read"})
+     * @ORM\Column(type="string", length=1000, nullable=true)
+     */
+    private $additionalInfo;
 
     public function getId(): ?int
     {
@@ -81,18 +88,6 @@ class Transaction
         return $this;
     }
 
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
     public function getInitiator(): ?string
     {
         return $this->initiator;
@@ -117,15 +112,23 @@ class Transaction
         return $this;
     }
 
-    public function getNotice(): ?string
+    public function getDescription()
     {
-        return $this->notice;
+        return $this->description;
     }
 
-    public function setNotice(?string $notice): self
+    public function setDescription($description): void
     {
-        $this->notice = $notice;
+        $this->description = $description;
+    }
 
-        return $this;
+    public function getAdditionalInfo()
+    {
+        return $this->additionalInfo;
+    }
+
+    public function setAdditionalInfo($additionalInfo): void
+    {
+        $this->additionalInfo = $additionalInfo;
     }
 }

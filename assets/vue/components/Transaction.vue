@@ -1,7 +1,8 @@
 <template>
   <div class="card w-100 mt-2">
     <div class="card-body">
-      {{ amount }}
+      {{ transaction.datetime }}
+      {{ transaction.amount }}
     </div>
   </div>
 </template>
@@ -10,8 +11,8 @@
 export default {
   name: "Transaction",
   props: {
-    amount: {
-      type: Number,
+    transaction: {
+      type: Object,
       required: true
     }
   }
