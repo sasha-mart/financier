@@ -1,9 +1,13 @@
-FROM node:13
+FROM node:lts-alpine
 
-RUN apt-get update
-RUN apt-get install -y apt-transport-https ca-certificates
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get install -y yarn
+WORKDIR /usr/src/frontend
 
-EXPOSE 80
+COPY . .
+
+RUN npm install -g http-server
+
+RUN yarn global add @vue/cli
+RUN yarn install
+
+CMD [ "yarn", "run", "dev" ]
+EXPOSE 8081
