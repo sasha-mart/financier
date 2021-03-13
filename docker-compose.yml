@@ -23,9 +23,9 @@ services:
         ports:
             - '9002:9000'
         environment:
-            DATABASE_URL: mysql://symfony:symfony@mysql:3306/financier?serverVersion=8
-            XDEBUG_CONFIG: "remote_host=financier.local remote_enable=1 idekey=PHPSTORM"
-            PHP_IDE_CONFIG: "serverName=financier.local"
+            DATABASE_URL: mysql://root:example@mysql:3306/financier?serverVersion=8
+            XDEBUG_CONFIG: "remote_host=financier.localhost remote_enable=1 idekey=PHPSTORM remote_connect_back=1"
+            PHP_IDE_CONFIG: "serverName=financier.localhost"
         working_dir: /usr/src/backend
         env_file:
             - ./backend/.env
