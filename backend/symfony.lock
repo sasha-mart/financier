@@ -258,6 +258,9 @@
     "symfony/dependency-injection": {
         "version": "v5.0.11"
     },
+    "symfony/deprecation-contracts": {
+        "version": "v2.2.0"
+    },
     "symfony/doctrine-bridge": {
         "version": "v5.0.11"
     },
@@ -331,9 +334,6 @@
         "version": "v5.0.11"
     },
     "symfony/http-kernel": {
-        "version": "v5.0.11"
-    },
-    "symfony/inflector": {
         "version": "v5.0.11"
     },
     "symfony/intl": {
@@ -446,6 +446,9 @@
     },
     "symfony/property-info": {
         "version": "v5.0.11"
+    },
+    "symfony/proxy-manager-bridge": {
+        "version": "v5.2.4"
     },
     "symfony/routing": {
         "version": "4.2",
@@ -583,9 +586,6 @@
     },
     "twig/twig": {
         "version": "v3.1.0"
-    },
-    "webimpress/safe-writer": {
-        "version": "2.1.0"
     },
     "webmozart/assert": {
         "version": "1.9.1"
