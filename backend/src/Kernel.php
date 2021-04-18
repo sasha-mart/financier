@@ -15,6 +15,11 @@ class Kernel extends BaseKernel
 
     private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
+    public function getProjectDir(): string
+    {
+        return \dirname(__DIR__);
+    }
+
     public function registerBundles(): iterable
     {
         $contents = require $this->getProjectDir().'/config/bundles.php';
@@ -23,11 +28,6 @@ class Kernel extends BaseKernel
                 yield new $class();
             }
         }
-    }
-
-    public function getProjectDir(): string
-    {
-        return \dirname(__DIR__);
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -11,31 +12,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/api/v1/parser/{bankName}", name="index", methods={"POST"})
  *
  * @param Request $request
  * @param string  $bankName
+ *
  * @return void
  */
 class Parser extends AbstractController
 {
-    /**
-     * @var ParserInterface
-     */
-    private $parser;
-
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-    /**
-     * @var AlfaBankParserStrategy
-     */
     private AlfaBankParserStrategy $alfaBankParserStrategy;
+
+    private ParserInterface $parser;
+
+    private SerializerInterface $serializer;
 
     public function __construct(
         ParserInterface $parser,
@@ -49,7 +43,7 @@ class Parser extends AbstractController
 
     public function __invoke(Request $request, string $bankName): Response
     {
-        if ($bankName !== Bank::ALFA_BANK_ALIAS) {
+        if (Bank::ALFA_BANK_ALIAS !== $bankName) {
             return new JsonResponse([
                 'message' => 'Данный банк не поддерживается.',
             ], Response::HTTP_BAD_REQUEST);

@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Enum\TransactionType;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -44,16 +44,16 @@ class Category
         return $this->name;
     }
 
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
     public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
     }
 
     public function setType(string $type): self

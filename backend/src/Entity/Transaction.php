@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
@@ -15,18 +15,16 @@ use Doctrine\ORM\Mapping as ORM;
 class Transaction
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
      * @Groups({"transaction:read"})
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=1000, nullable=true)
      */
-    private $id;
+    private $additionalInfo;
 
     /**
      * @Groups({"transaction:read"})
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="float")
      */
-    private $datetime;
+    private $amount;
 
     /**
      * @Groups({"transaction:read"})
@@ -37,15 +35,9 @@ class Transaction
 
     /**
      * @Groups({"transaction:read"})
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="datetime")
      */
-    private $initiator;
-
-    /**
-     * @Groups({"transaction:read"})
-     * @ORM\Column(type="float")
-     */
-    private $amount;
+    private $datetime;
 
     /**
      * @Groups({"transaction:read"})
@@ -54,26 +46,27 @@ class Transaction
     private $description;
 
     /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @Groups({"transaction:read"})
-     * @ORM\Column(type="string", length=1000, nullable=true)
+     * @ORM\Column(type="integer")
      */
-    private $additionalInfo;
+    private $id;
 
-    public function getId(): ?int
+    /**
+     * @Groups({"transaction:read"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $initiator;
+
+    public function getAdditionalInfo()
     {
-        return $this->id;
+        return $this->additionalInfo;
     }
 
-    public function getDatetime(): ?\DateTimeInterface
+    public function getAmount(): ?float
     {
-        return $this->datetime;
-    }
-
-    public function setDatetime(\DateTimeInterface $datetime): self
-    {
-        $this->datetime = $datetime;
-
-        return $this;
+        return $this->amount;
     }
 
     public function getCategory(): ?Category
@@ -81,11 +74,19 @@ class Transaction
         return $this->category;
     }
 
-    public function setCategory(?Category $category): self
+    public function getDatetime(): ?\DateTimeInterface
     {
-        $this->category = $category;
+        return $this->datetime;
+    }
 
-        return $this;
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getInitiator(): ?string
@@ -93,16 +94,14 @@ class Transaction
         return $this->initiator;
     }
 
-    public function setInitiator(string $initiator): self
+    public function isBetweenDates(\DateTimeInterface $dateFrom, \DateTimeInterface $dateTo): bool
     {
-        $this->initiator = $initiator;
-
-        return $this;
+        return $this->datetime >= $dateFrom && $this->datetime <= $dateTo;
     }
 
-    public function getAmount(): ?float
+    public function setAdditionalInfo($additionalInfo): void
     {
-        return $this->amount;
+        $this->additionalInfo = $additionalInfo;
     }
 
     public function setAmount(float $amount): self
@@ -112,9 +111,18 @@ class Transaction
         return $this;
     }
 
-    public function getDescription()
+    public function setCategory(?Category $category): self
     {
-        return $this->description;
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function setDatetime(\DateTimeInterface $datetime): self
+    {
+        $this->datetime = $datetime;
+
+        return $this;
     }
 
     public function setDescription($description): void
@@ -122,18 +130,10 @@ class Transaction
         $this->description = $description;
     }
 
-    public function getAdditionalInfo()
+    public function setInitiator(string $initiator): self
     {
-        return $this->additionalInfo;
-    }
+        $this->initiator = $initiator;
 
-    public function setAdditionalInfo($additionalInfo): void
-    {
-        $this->additionalInfo = $additionalInfo;
-    }
-
-    public function isBetweenDates(\DateTimeInterface $dateFrom, \DateTimeInterface $dateTo): bool
-    {
-        return $this->datetime >= $dateFrom && $this->datetime <= $dateTo;
+        return $this;
     }
 }

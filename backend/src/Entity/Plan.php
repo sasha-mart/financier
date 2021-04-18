@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ApiResource()
@@ -13,13 +13,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
  */
 class Plan
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
     /**
      * @ORM\Column(type="date")
      */
@@ -31,6 +24,13 @@ class Plan
     private $dateTo;
 
     /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\PlanCategory", mappedBy="plan", orphanRemoval=true)
      */
     private $planCategories;
@@ -38,43 +38,6 @@ class Plan
     public function __construct()
     {
         $this->planCategories = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getDateFrom(): ?\DateTimeInterface
-    {
-        return $this->dateFrom;
-    }
-
-    public function setDateFrom(\DateTimeInterface $dateFrom): self
-    {
-        $this->dateFrom = $dateFrom;
-
-        return $this;
-    }
-
-    public function getDateTo(): ?\DateTimeInterface
-    {
-        return $this->dateTo;
-    }
-
-    public function setDateTo(\DateTimeInterface $dateTo): self
-    {
-        $this->dateTo = $dateTo;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|PlanCategory[]
-     */
-    public function getPlanCategories(): Collection
-    {
-        return $this->planCategories;
     }
 
     public function addPlanCategory(PlanCategory $planCategory): self
@@ -87,6 +50,29 @@ class Plan
         return $this;
     }
 
+    public function getDateFrom(): ?\DateTimeInterface
+    {
+        return $this->dateFrom;
+    }
+
+    public function getDateTo(): ?\DateTimeInterface
+    {
+        return $this->dateTo;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Collection|PlanCategory[]
+     */
+    public function getPlanCategories(): Collection
+    {
+        return $this->planCategories;
+    }
+
     public function removePlanCategory(PlanCategory $planCategory): self
     {
         if ($this->planCategories->contains($planCategory)) {
@@ -96,6 +82,20 @@ class Plan
                 $planCategory->setPlan(null);
             }
         }
+
+        return $this;
+    }
+
+    public function setDateFrom(\DateTimeInterface $dateFrom): self
+    {
+        $this->dateFrom = $dateFrom;
+
+        return $this;
+    }
+
+    public function setDateTo(\DateTimeInterface $dateTo): self
+    {
+        $this->dateTo = $dateTo;
 
         return $this;
     }

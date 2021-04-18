@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\DTO;
@@ -7,12 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ParserInput
 {
-    /**
-     * @var string
-     * @Assert\NotNull()
-     */
-    private $file;
-
     /**
      * @var \DateTimeInterface
      * @Assert\Date()
@@ -26,50 +21,38 @@ class ParserInput
     private $dateTo;
 
     /**
-     * @return string
+     * @var string
+     * @Assert\NotNull()
      */
-    public function getFile(): string
-    {
-        return $this->file;
-    }
+    private $file;
 
-    /**
-     * @param string $file
-     */
-    public function setFile(string $file): void
-    {
-        $this->file = $file;
-    }
-
-    /**
-     * @return \DateTimeInterface
-     */
     public function getDateFrom(): \DateTimeInterface
     {
         return $this->dateFrom;
     }
 
-    /**
-     * @param \DateTimeInterface $dateFrom
-     */
-    public function setDateFrom(\DateTimeInterface $dateFrom): void
-    {
-        $this->dateFrom = $dateFrom;
-    }
-
-    /**
-     * @return \DateTimeInterface
-     */
     public function getDateTo(): \DateTimeInterface
     {
         return $this->dateTo;
     }
 
-    /**
-     * @param \DateTimeInterface $dateTo
-     */
+    public function getFile(): string
+    {
+        return $this->file;
+    }
+
+    public function setDateFrom(\DateTimeInterface $dateFrom): void
+    {
+        $this->dateFrom = $dateFrom;
+    }
+
     public function setDateTo(\DateTimeInterface $dateTo): void
     {
         $this->dateTo = $dateTo;
+    }
+
+    public function setFile(string $file): void
+    {
+        $this->file = $file;
     }
 }

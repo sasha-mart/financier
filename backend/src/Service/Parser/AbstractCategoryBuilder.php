@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Service\Parser;
@@ -10,24 +11,12 @@ abstract class AbstractCategoryBuilder
 {
     protected Category $category;
 
-    /**
-     * @var CategoryRepository
-     */
     private CategoryRepository $categoryRepository;
 
     public function __construct(CategoryRepository $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
     }
-
-    public function reset(): void
-    {
-        $this->category = new Category();
-    }
-
-    abstract public function setType(string $type): void;
-
-    abstract public function setName(string $name): void;
 
     public function getCategory(): Category
     {
@@ -38,4 +27,13 @@ abstract class AbstractCategoryBuilder
 
         return null !== $existCategory ? $existCategory : $this->category;
     }
+
+    public function reset(): void
+    {
+        $this->category = new Category();
+    }
+
+    abstract public function setName(string $name): void;
+
+    abstract public function setType(string $type): void;
 }

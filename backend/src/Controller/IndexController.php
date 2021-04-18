@@ -12,7 +12,6 @@ final class IndexController extends AbstractController
 {
     /**
      * @Route("/{vueRouting}", name="index")
-     * @return Response
      */
     public function indexAction(): Response
     {

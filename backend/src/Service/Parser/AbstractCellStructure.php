@@ -1,11 +1,9 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Service\Parser;
 
-use App\Service\Parser\AlfaBank\CategoryBuilder;
-use App\Service\Parser\AlfaBank\CellStructure;
-use App\Service\Parser\AlfaBank\TransactionBuilder;
 use App\Service\Parser\Exception\LogicException;
 
 /**
@@ -13,11 +11,11 @@ use App\Service\Parser\Exception\LogicException;
  */
 abstract class AbstractCellStructure
 {
-    private array $structure;
+    protected AbstractCategoryBuilder $categoryBuilder;
 
     protected AbstractTransactionBuilder $transactionBuilder;
 
-    protected AbstractCategoryBuilder $categoryBuilder;
+    private array $structure;
 
     public function __construct(
         AbstractTransactionBuilder $transactionBuilder,
@@ -36,16 +34,6 @@ abstract class AbstractCellStructure
 
         $this->structure[$cellIndex] = $this->structure[$cellTitle];
         unset($this->structure[$cellTitle]);
-    }
-
-    public function hasColumnName(string $columnName): bool
-    {
-        return isset($this->structure[$columnName]);
-    }
-
-    public function hasIndex(int $columnIndex): bool
-    {
-        return isset($this->structure[$columnIndex]);
     }
 
     /**
@@ -76,15 +64,25 @@ abstract class AbstractCellStructure
         return $this->structure[$cellIndex]['method'];
     }
 
+    public function hasColumnName(string $columnName): bool
+    {
+        return isset($this->structure[$columnName]);
+    }
+
+    public function hasIndex(int $columnIndex): bool
+    {
+        return isset($this->structure[$columnIndex]);
+    }
+
     /**
      * @return array Array with description of cells, format:
-     *  [
-     *      'ColumnTitle' => [
-     *          'builder' => 'transaction/category/etc',
-     *          'method' => 'setField',
-     *      ],
-     *      ...
-     *   ],
+     *               [
+     *                  'ColumnTitle' => [
+     *                      'builder' => 'transaction/category/etc',
+     *                      'method' => 'setField',
+     *                  ],
+     *                  ...
+     *               ],
      */
     abstract protected function getCellDescription(): array;
 }

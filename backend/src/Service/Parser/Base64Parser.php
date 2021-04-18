@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Service\Parser;
@@ -9,15 +10,9 @@ class Base64Parser implements ParserInterface
 
     private $tmpFile;
 
-    /**
-     * @param ParserStrategyInterface $strategy
-     * @return ParserInterface
-     */
-    public function setStrategy(ParserStrategyInterface $strategy): ParserInterface
+    public function __destruct()
     {
-        $this->strategy = $strategy;
-
-        return $this;
+        fclose($this->tmpFile);
     }
 
     public function parseReport(string $base64, \DateTimeInterface $dateFrom, \DateTimeInterface $dateTo): void
@@ -30,8 +25,10 @@ class Base64Parser implements ParserInterface
         $this->strategy->parseFile($dateFrom, $dateTo);
     }
 
-    public function __destruct()
+    public function setStrategy(ParserStrategyInterface $strategy): ParserInterface
     {
-        fclose($this->tmpFile);
+        $this->strategy = $strategy;
+
+        return $this;
     }
 }

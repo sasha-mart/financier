@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Service\Parser\AlfaBank;
@@ -14,6 +15,12 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class AlfaBankParserStrategy implements ParserStrategyInterface
 {
+    private CategoryBuilder $categoryBuilder;
+
+    private CellStructure $cellStructure;
+
+    private EntityManagerInterface $entityManager;
+
     /**
      * @var ReaderInterface
      */
@@ -21,24 +28,12 @@ class AlfaBankParserStrategy implements ParserStrategyInterface
 
     private TransactionBuilder $transactionBuilder;
 
-    private CategoryBuilder $categoryBuilder;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-    /**
-     * @var CellStructure
-     */
-    private CellStructure $cellStructure;
-
     public function __construct(
         TransactionBuilder $transactionBuilder,
         CategoryBuilder $categoryBuilder,
         CellStructure $cellStructure,
         EntityManagerInterface $entityManager
-    )
-    {
+    ) {
         $this->transactionBuilder = $transactionBuilder;
         $this->categoryBuilder = $categoryBuilder;
         $this->entityManager = $entityManager;
@@ -46,8 +41,8 @@ class AlfaBankParserStrategy implements ParserStrategyInterface
     }
 
     /**
-     * @param string $filePath
      * @return $this
+     *
      * @throws IOException
      */
     public function initReader(string $filePath): void
@@ -68,7 +63,7 @@ class AlfaBankParserStrategy implements ParserStrategyInterface
         $this->setCellsStructure($sheet->getRowIterator()->current());
         $sheet->getRowIterator()->next();
 
-        /** @var Row $row */
+        /* @var Row $row */
         while ($sheet->getRowIterator()->valid()) {
             $transaction = $this->getTransactionFromRow($sheet->getRowIterator()->current());
 
@@ -82,20 +77,9 @@ class AlfaBankParserStrategy implements ParserStrategyInterface
         }
     }
 
-    private function setCellsStructure(Row $firstRow): void
+    private function cleanZeroWidthSpace(string $string): string
     {
-        foreach ($firstRow->getCells() as $cellIndex => $cell) {
-            $columnName = $this->cleanZeroWidthSpace($cell->getValue());
-            if (false === is_string($columnName)) {
-                continue;
-            }
-
-            if (false === $this->cellStructure->hasColumnName($columnName)) {
-                continue;
-            }
-
-            $this->cellStructure->addCellDescription($cellIndex, $columnName);
-        }
+        return preg_replace('/[\x{200B}-\x{200D}\x{FEFF}]/u', '', $string);
     }
 
     private function getTransactionFromRow(Row $row): Transaction
@@ -120,8 +104,19 @@ class AlfaBankParserStrategy implements ParserStrategyInterface
         return $transaction;
     }
 
-    private function cleanZeroWidthSpace(string $string): string
+    private function setCellsStructure(Row $firstRow): void
     {
-        return preg_replace( '/[\x{200B}-\x{200D}\x{FEFF}]/u', '', $string);
+        foreach ($firstRow->getCells() as $cellIndex => $cell) {
+            $columnName = $this->cleanZeroWidthSpace($cell->getValue());
+            if (false === is_string($columnName)) {
+                continue;
+            }
+
+            if (false === $this->cellStructure->hasColumnName($columnName)) {
+                continue;
+            }
+
+            $this->cellStructure->addCellDescription($cellIndex, $columnName);
+        }
     }
 }

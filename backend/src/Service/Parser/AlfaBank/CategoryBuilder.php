@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Service\Parser\AlfaBank;
@@ -9,6 +10,10 @@ use App\Service\Parser\Exception\LogicException;
 
 class CategoryBuilder extends AbstractCategoryBuilder
 {
+    public function setName(string $name): void
+    {
+        $this->category->setName($name);
+    }
 
     public function setType(string $type): void
     {
@@ -22,10 +27,5 @@ class CategoryBuilder extends AbstractCategoryBuilder
             default:
                 throw new LogicException('Incorrect transaction type.');
         }
-    }
-
-    public function setName(string $name): void
-    {
-        $this->category->setName($name);
     }
 }

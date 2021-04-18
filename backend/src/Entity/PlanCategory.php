@@ -12,6 +12,17 @@ use Doctrine\ORM\Mapping as ORM;
 class PlanCategory
 {
     /**
+     * @ORM\Column(type="float")
+     */
+    private $amount;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
+
+    /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -24,16 +35,15 @@ class PlanCategory
      */
     private $plan;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $category;
+    public function getAmount(): ?float
+    {
+        return $this->amount;
+    }
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $amount;
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
 
     public function getId(): ?int
     {
@@ -45,16 +55,11 @@ class PlanCategory
         return $this->plan;
     }
 
-    public function setPlan(?Plan $plan): self
+    public function setAmount(float $amount): self
     {
-        $this->plan = $plan;
+        $this->amount = $amount;
 
         return $this;
-    }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
     }
 
     public function setCategory(?Category $category): self
@@ -64,14 +69,9 @@ class PlanCategory
         return $this;
     }
 
-    public function getAmount(): ?float
+    public function setPlan(?Plan $plan): self
     {
-        return $this->amount;
-    }
-
-    public function setAmount(float $amount): self
-    {
-        $this->amount = $amount;
+        $this->plan = $plan;
 
         return $this;
     }
