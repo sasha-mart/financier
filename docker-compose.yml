@@ -5,8 +5,8 @@ services:
         image: nginx:1.19.0-alpine
         volumes:
             - ./backend:/usr/src/backend
-            - ./dockerization/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
-            - ./dockerization/logs:/var/log/nginx
+            - ./docker-compose/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
+            - ./docker-compose/logs:/var/log/nginx
         depends_on:
             - php
         links:
@@ -17,15 +17,13 @@ services:
             - financier
 
     php:
-        build: ./dockerization/php
+        build: ./docker-compose/php
         volumes:
             - ./backend:/usr/src/backend
         ports:
             - '9002:9000'
         environment:
             DATABASE_URL: mysql://root:example@mysql:3306/financier?serverVersion=8
-            XDEBUG_CONFIG: "remote_host=financier.localhost remote_enable=1 idekey=PHPSTORM remote_connect_back=1"
-            PHP_IDE_CONFIG: "serverName=financier.localhost"
         working_dir: /usr/src/backend
         env_file:
             - ./backend/.env
@@ -44,14 +42,14 @@ services:
             MYSQL_USER: symfony
             MYSQL_PASSWORD: symfony
         volumes:
-            - ./dockerization/mysql/data:/var/lib/mysql
+            - ./docker-compose/mysql/data:/var/lib/mysql
         networks:
             - financier
 
     frontend:
         build:
             context: ./frontend
-            dockerfile: ./../dockerization/frontend/Dockerfile
+            dockerfile: ./../docker-compose/frontend/Dockerfile
         volumes:
             - ./frontend:/usr/src/frontend
         links:
