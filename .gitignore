@@ -1,5 +1,5 @@
-/dockerization/mysql/
-/dockerization/composer/
-/dockerization/logs/
+/docker-compose/mysql/
+/docker-compose/composer/
+/docker-compose/logs/
 
 /.idea/
