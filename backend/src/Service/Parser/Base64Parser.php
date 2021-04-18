@@ -5,9 +5,9 @@ namespace App\Service\Parser;
 
 class Base64Parser implements ParserInterface
 {
-    private const TEMP_DIRECTORY = './../../../var/reports/';
-
     private ParserStrategyInterface $strategy;
+
+    private $tmpFile;
 
     /**
      * @param ParserStrategyInterface $strategy
@@ -22,13 +22,16 @@ class Base64Parser implements ParserInterface
 
     public function parseReport(string $base64, \DateTimeInterface $dateFrom, \DateTimeInterface $dateTo): void
     {
-        $filePath = self::TEMP_DIRECTORY.uniqid();
-        $file = fopen($filePath, 'wb');
-        $data = explode(',', $base64);
-        fwrite($file, base64_decode($data[1]));
-        fclose($file);
+        $content = base64_decode($base64);
+        $this->tmpFile = tmpfile();
+        fwrite($this->tmpFile, $content);
 
-        $this->strategy->initReader($filePath);
+        $this->strategy->initReader(stream_get_meta_data($this->tmpFile)['uri']);
         $this->strategy->parseFile($dateFrom, $dateTo);
+    }
+
+    public function __destruct()
+    {
+        fclose($this->tmpFile);
     }
 }

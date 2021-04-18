@@ -5,7 +5,7 @@ namespace App\Service\Parser;
 
 interface ParserStrategyInterface
 {
-    public function initReader(string $filePath): ParserStrategyInterface;
+    public function initReader(string $filePath): void;
 
     public function parseFile(\DateTimeInterface $dateFrom, \DateTimeInterface $dateTo): void ;
 }

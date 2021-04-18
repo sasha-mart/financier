@@ -13,7 +13,7 @@ class AlfaBankStrategyTest extends ApiTestCase
     public function testParsingPositive()
     {
         $base64 = base64_encode(file_get_contents(__DIR__ . '/../../Resources/alfabank_test_report.csv'));
-        $response = static::createClient()->request(
+        static::createClient()->request(
             'POST',
             '/api/v1/parser/alfa',
             [

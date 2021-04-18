@@ -5,7 +5,7 @@ namespace App\Controller;
 
 use App\DTO\ParserInput;
 use App\Entity\Bank;
-use App\Service\Parser\AlfaBankParserStrategy;
+use App\Service\Parser\AlfaBank\AlfaBankParserStrategy;
 use App\Service\Parser\ParserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,11 +32,19 @@ class Parser extends AbstractController
      * @var SerializerInterface
      */
     private $serializer;
+    /**
+     * @var AlfaBankParserStrategy
+     */
+    private AlfaBankParserStrategy $alfaBankParserStrategy;
 
-    public function __construct(ParserInterface $parser, SerializerInterface $serializer)
+    public function __construct(
+        ParserInterface $parser,
+        SerializerInterface $serializer,
+        AlfaBankParserStrategy $alfaBankParserStrategy)
     {
         $this->parser = $parser;
         $this->serializer = $serializer;
+        $this->alfaBankParserStrategy = $alfaBankParserStrategy;
     }
 
     public function __invoke(Request $request, string $bankName): Response
@@ -55,13 +63,13 @@ class Parser extends AbstractController
         );
 
         $this->parser
-            ->setStrategy(new AlfaBankParserStrategy())
+            ->setStrategy($this->alfaBankParserStrategy)
             ->parseReport(
                 $parserRequestDto->getFile(),
                 $parserRequestDto->getDateFrom(),
                 $parserRequestDto->getDateTo()
             );
 
-
+        return new JsonResponse(null, Response::HTTP_CREATED);
     }
 }

@@ -30,7 +30,7 @@ class Transaction
 
     /**
      * @Groups({"transaction:read"})
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
@@ -130,5 +130,10 @@ class Transaction
     public function setAdditionalInfo($additionalInfo): void
     {
         $this->additionalInfo = $additionalInfo;
+    }
+
+    public function isBetweenDates(\DateTimeInterface $dateFrom, \DateTimeInterface $dateTo): bool
+    {
+        return $this->datetime >= $dateFrom && $this->datetime <= $dateTo;
     }
 }

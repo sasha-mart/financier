@@ -9,6 +9,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "api-platform/api-pack": "^1.2",
+        "box/spout": "^3.1",
         "nelmio/cors-bundle": "^2.1",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/asset": "^5.2",
