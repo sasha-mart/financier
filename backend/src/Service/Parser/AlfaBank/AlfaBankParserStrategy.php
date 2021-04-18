@@ -75,6 +75,8 @@ class AlfaBankParserStrategy implements ParserStrategyInterface
 
             $sheet->getRowIterator()->next();
         }
+
+        $this->reader->close();
     }
 
     private function cleanZeroWidthSpace(string $string): string
