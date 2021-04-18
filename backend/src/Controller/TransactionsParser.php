@@ -16,14 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * @Route("/api/v1/parser/{bankName}", name="index", methods={"POST"})
+ * @Route("/api/v1/transactions/parser/{bankName}", name="transactions_parser", methods={"POST"})
  *
  * @param Request $request
  * @param string  $bankName
  *
  * @return void
  */
-class Parser extends AbstractController
+class TransactionsParser extends AbstractController
 {
     private AlfaBankParserStrategy $alfaBankParserStrategy;
 

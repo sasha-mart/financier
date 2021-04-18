@@ -15,7 +15,7 @@ class AlfaBankStrategyTest extends ApiTestCase
         $base64 = base64_encode(file_get_contents(__DIR__ . '/../../Resources/alfabank_test_report.csv'));
         static::createClient()->request(
             'POST',
-            '/api/v1/parser/alfa',
+            '/api/v1/transactions/parser/alfa',
             [
                 'json' => [
                     'file' => $base64,
