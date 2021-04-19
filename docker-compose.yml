@@ -27,7 +27,6 @@ services:
         working_dir: /usr/src/backend
         env_file:
             - ./backend/.env
-        user: 1000:1000
         depends_on:
             - mysql
         networks:
