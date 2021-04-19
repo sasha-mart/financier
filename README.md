@@ -9,3 +9,5 @@ Then you can see API docs at http://localhost:8100/api/v1
 `docker-compose exec php bin/console d:m:m`
    
 Now the API works! :)
+
+Frontend is not available now, only API.

@@ -46,18 +46,18 @@ services:
         networks:
             - financier
 
-    frontend:
-        build:
-            context: ./frontend
-            dockerfile: ./../docker-compose/frontend/Dockerfile
-        volumes:
-            - ./frontend:/usr/src/frontend
-        links:
-            - php
-        networks:
-            - financier
-        ports:
-            - '40190:8081'
+#    frontend:
+#        build:
+#            context: ./frontend
+#            dockerfile: ./../docker-compose/frontend/Dockerfile
+#        volumes:
+#            - ./frontend:/usr/src/frontend
+#        links:
+#            - php
+#        networks:
+#            - financier
+#        ports:
+#            - '40190:8081'
 
 networks:
     financier:
